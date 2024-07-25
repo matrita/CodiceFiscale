@@ -15,6 +15,6 @@ public class PersonaController {
 
     @GetMapping("/api/persona/{codiceFiscale}")
     public Persona getPersonaInfo(@PathVariable String codiceFiscale) {
-        return personaService.getPersonaInfo(codiceFiscale);
+        return personaService.getPersonaInfo(codiceFiscale.toUpperCase());
     }
 }
