@@ -35,7 +35,7 @@ public class PersonaService {
 
         // Calcolo dell'anno
         int year = Integer.parseInt(yearString);
-        year += (year < 30) ? 2000 : 1900;
+        year += (year < 25) ? 2000 : 1900;
 
         // Calcolo del mese
         int month = monthMap.get(monthChar);
