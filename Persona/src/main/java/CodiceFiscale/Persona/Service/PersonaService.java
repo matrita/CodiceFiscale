@@ -33,9 +33,8 @@ public class PersonaService {
         char monthChar = codiceFiscale.charAt(8);
         String dayString = codiceFiscale.substring(9, 11);
 
-        // Calcolo dell'anno
-        int year = Integer.parseInt(yearString);
-        year += (year < 25) ? 2000 : 1900;
+        // Calcolo dell'anno usando il metodo
+        int year = determinareAnnoCompleto(Integer.parseInt(yearString));
 
         // Calcolo del mese
         int month = monthMap.get(monthChar);
@@ -57,5 +56,12 @@ public class PersonaService {
         persona.setEta(eta);
 
         return persona;
+    }
+
+    // Metodo per determinare il secolo corretto
+    private int determinareAnnoCompleto(int annoBreve) {
+        int annoCorrente = LocalDate.now().getYear() % 100;
+        int secolo = (annoBreve <= annoCorrente) ? 2000 : 1900;
+        return secolo + annoBreve;
     }
 }
