@@ -1,5 +1,6 @@
 package CodiceFiscale.Persona.Service;
 
+import CodiceFiscale.Persona.Exception.CodiceFiscaleNonValidoException;
 import CodiceFiscale.Persona.Model.Persona;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,11 @@ public class PersonaService {
     }
 
     public Persona getPersonaInfo(String codiceFiscale) {
+
+        if (!isValidCodiceFiscale(codiceFiscale)) {
+            throw new CodiceFiscaleNonValidoException("Codice Fiscale non valido: " + codiceFiscale);
+        }
+
         // Estrazione delle componenti della data di nascita
         String yearString = codiceFiscale.substring(6, 8);
         char monthChar = codiceFiscale.charAt(8);
@@ -60,8 +66,20 @@ public class PersonaService {
 
     // Metodo per determinare il secolo corretto
     private int determinareAnnoCompleto(int annoBreve) {
+        // Ottieni gli ultimi due cifre dell'anno corrente (es. 24 per l'anno 2024)
         int annoCorrente = LocalDate.now().getYear() % 100;
+
+        // Determina il secolo:
+        // - Se annoBreve è minore o uguale all'anno corrente, appartene al 2000 altrimenti appartene al 1900.
         int secolo = (annoBreve <= annoCorrente) ? 2000 : 1900;
+
+        // Ritorna l'anno completo sommando il secolo al valore di annoBreve.
         return secolo + annoBreve;
+    }
+
+    private boolean isValidCodiceFiscale(String codiceFiscale) {
+        // Implementa qui la logica di validazione del codice fiscale
+        // Ad esempio, puoi verificare la lunghezza, il formato o altri criteri
+        return codiceFiscale.matches("^[A-Z0-9]{16}$");
     }
 }
